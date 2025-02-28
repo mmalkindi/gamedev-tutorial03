@@ -20,9 +20,15 @@ untuk menerapkan *double tap* yang diperlukan fitur `Dashing`.
 
 Untuk polishing, saya melakukan:
 
+- Mengubah *sprite* karakter pemain dari *placeholder* pesawat menjadi manusia
 - Menyesuaikan *sprite* karakter dengan arah yang dituju (menggunakan flip horizontal)
 - Naiive *sprite* animations dengan load texture:
   - `idle` ketika tidak ada input
   - `crouch` ketika sedang `Crouching`
   - `jump` ketika sedang lompat/`Double Jump`
   - `walk` ketika sedang bergerak kanan/kiri
+- Remapping input supaya lebih nyaman untuk lebih banyak pemain
+  - `move_right`: `D`, `ArrowRight`, `DPadRight`
+  - `move_left`: `A`, `ArrowLeft`, `DPadLeft`
+  - `move_jump`: `Spacebar`, `ArrowUp`, `DPadUp`
+  - `move_crouch`: `Ctrl`, `ArrowDown`, `DpadDown`
