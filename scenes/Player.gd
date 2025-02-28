@@ -1,74 +1,116 @@
 extends CharacterBody2D
 
-@export var gravity = 1500.0
-@export var walk_speed = 600
-@export var jump_speed = -500
+const DEFAULT_GRAVITY = 1500.0
+const DEFAULT_JUMP_SPEED = -500
+const DEFAULT_WALK_SPEED = 300
+const DASH_SPEED = 600
+const CROUCH_WALK_SPEED = 50
+const DEFAULT_SIZE = 1
+const DEFAULT_OFFSET = 0
+const CROUCH_SIZE = 1 # 0.5
+const CROUCH_OFFSET = 0 # 27.5
+const DOUBLETAP_DELAY = .25
+
+@export var gravity = DEFAULT_GRAVITY
+@export var walk_speed = DEFAULT_WALK_SPEED
+@export var jump_speed = DEFAULT_JUMP_SPEED
 
 var can_double_jump = true
 var can_dash = true
-var last_direction = null
-var isCrouching = false
+var last_direction = ""
+var direction = 0
+var is_crouching = false
+var landing : bool
+var doubletap_time = DOUBLETAP_DELAY
 
 func _physics_process(delta):
-	velocity.y += delta * gravity
+	velocity.y += delta * gravity # Always apply gravity
 	
-	if (is_on_floor() or can_double_jump) and Input.is_action_just_pressed('move_jump'):
-		if not can_double_jump:
-			print("double")
+	# Handle all code interfacing with landing state
+	if is_on_floor():
+		# on ground
+		if Input.is_action_just_pressed('move_jump'):
+			velocity.y = jump_speed
+		elif Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+			change_sprite("walk")
+		else:
+			change_sprite("")
+		
+		if landing:
+			# just landed
+			change_sprite("")
 			can_double_jump = true
-		elif (not is_on_floor() and can_double_jump):
-			print("no double")
+			landing = false
+	else: 
+		# in the air
+		if Input.is_action_just_pressed('move_jump') and can_double_jump:
+			velocity.y = jump_speed
 			can_double_jump = false
-		get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_jump.png")
-		velocity.y = jump_speed
-	elif (is_on_floor()) and Input.is_action_pressed('move_crouch'):
-		if not isCrouching:
-			get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_duck.png")
-			get_node(".").scale.y = 0.664
-			get_node(".").position.y += 21
-		isCrouching = true
-		walk_speed = 400
+		
+		if !landing:
+			# takeoff
+			change_sprite("jump")
+			landing = true
+	
+	# Regardless of air status (strafe, crouch)
+	if Input.is_action_pressed('move_crouch'):
+		change_sprite("crouch")
+		walk_speed = CROUCH_WALK_SPEED
+		if not is_crouching:
+			get_node(".").scale.y = CROUCH_SIZE
+			get_node(".").position.y += CROUCH_OFFSET
+		is_crouching = true
 	else:
-		if isCrouching:
-			get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_idle.png")
-			get_node(".").scale.y = 1
-			get_node(".").position.y -= 21
-		isCrouching = false
-		walk_speed = 800
+		if is_crouching:
+			change_sprite("")
+			get_node(".").position.y -= CROUCH_OFFSET
+			get_node(".").scale.y = DEFAULT_SIZE
+			walk_speed = DEFAULT_WALK_SPEED
+		is_crouching = false
 
+	if Input.is_action_just_pressed("move_left"):
+		if last_direction == "left" and doubletap_time >= 0 and not is_crouching:
+			walk_speed = DASH_SPEED
+		else:
+			walk_speed = DEFAULT_WALK_SPEED
+			doubletap_time = DOUBLETAP_DELAY
+		last_direction = "left"
+		
+	elif Input.is_action_just_pressed("move_right"):
+		if last_direction == "right" and doubletap_time >= 0 and not is_crouching:
+			walk_speed = DASH_SPEED
+		else:
+			walk_speed = DEFAULT_WALK_SPEED
+			doubletap_time = DOUBLETAP_DELAY
+		last_direction = "right"
+		
+	# Determine direction
 	if Input.is_action_pressed("move_left"):
-		if is_on_floor():
-			get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_walk1.png")
 		get_node("Sprite2D").flip_h = true
 		velocity.x = -walk_speed
 	elif Input.is_action_pressed("move_right"):
-		if is_on_floor():
-			get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_walk1.png")
 		get_node("Sprite2D").flip_h = false
-		velocity.x =  walk_speed
+		velocity.x = walk_speed
 	else:
-		if (is_on_floor() or can_double_jump):
-			get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_idle.png")
 		velocity.x = 0
-
+		
 	# "move_and_slide" already takes delta time into account.
 	move_and_slide()
-	
-func check_dash_trigger(direction):
-	if can_dash and (direction == last_direction):
-		print(direction)
-		print("DASH!")
-		can_dash = false
-		walk_speed = 800
-		can_dash = true
-		walk_speed = 200
-	last_direction = direction
+
+func change_sprite(state: String) -> void:
+	if state == "jump":
+		get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_jump.png")
+	elif state == "walk":
+		get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_walk1.png")
+	elif state == "crouch":
+		get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_duck.png")
+	else:
+		get_node("Sprite2D").texture = load("res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	doubletap_time -= delta

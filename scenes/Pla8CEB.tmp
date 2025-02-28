@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://ofsbv6coxbmq" path="res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png" id="2_4548p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k302r"]
-size = Vector2(9.51028, 24.0441)
+size = Vector2(8.09386, 19.5024)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_85l7s")
 
-[node name="Hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(1.5, 9.99996)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 18.5)
 scale = Vector2(4.94202, 3.74312)
 shape = SubResource("RectangleShape2D_k302r")
 
