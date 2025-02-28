@@ -1,7 +1,28 @@
 # Tutorial 3 - Introduction to Game Programming
 
-## Latihan: ZZZ
+## Proses Pengerjaan: Fitur Lanjutan
 
-> Q: ???
+Pertama saya melakukan *breakdown* dari ketiga fitur lanjutan tersebut untuk memahaminya lebih lanjut:
 
-A: ZZZ
+- `Double Jump`: *Jump* tambahan ketika di udara -> Perlu cek apabila karakter memiliki status Double jump
+- `Dashing`: *Speed boost* (seperti *sprinting*) ketika melakukan *double tap* input arah yang sama -> Perlu check input *double tap*
+- `Crouching`: *Slow debuff*, bisa melewati area yang lebih sempit
+
+Selanjutnya, saya melakukan eksperimentasi ketiga fitur lanjutan tersebut.
+Fitur `Double Jump` bisa dibilang lumayan mudah karena hanya melakukan cek `is_on_ground` karakter pemain.
+Fitur `Crouching` juga hanya melakukan cek *state* input.
+Namun kode saya di tahap ini sudah lumayan berantakan, sehingga dilakukan *refactoring* kode movement pemain.
+
+Setelah itu, saya menggunakan adaptasi dari forum post [ini](https://godotforums.org/d/35106-is-there-a-simple-solution-for-a-double-tap/9)
+untuk menerapkan *double tap* yang diperlukan fitur `Dashing`.
+
+## Proses Pengerjaan: Polishing
+
+Untuk polishing, saya melakukan:
+
+- Menyesuaikan *sprite* karakter dengan arah yang dituju (menggunakan flip horizontal)
+- Naiive *sprite* animations dengan load texture:
+  - `idle` ketika tidak ada input
+  - `crouch` ketika sedang `Crouching`
+  - `jump` ketika sedang lompat/`Double Jump`
+  - `walk` ketika sedang bergerak kanan/kiri
