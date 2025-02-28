@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6h0olskapvy8"]
+
+[ext_resource type="Script" path="res://scenes/Player.gd" id="1_85l7s"]
+[ext_resource type="Texture2D" uid="uid://ofsbv6coxbmq" path="res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png" id="2_4548p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k302r"]
+size = Vector2(11.7361, 21.6397)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_85l7s")
+gravity = null
+walk_speed = null
+jump_speed = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14.5)
+scale = Vector2(4.94202, 3.74312)
+shape = SubResource("RectangleShape2D_k302r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_4548p")
