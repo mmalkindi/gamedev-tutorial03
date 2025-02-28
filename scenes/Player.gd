@@ -5,9 +5,8 @@ const DEFAULT_JUMP_SPEED = -500
 const DEFAULT_WALK_SPEED = 300
 const DASH_SPEED = 600
 const CROUCH_WALK_SPEED = 150
-const DEFAULT_SIZE = 1
-const DEFAULT_OFFSET = 0
-const CROUCH_SIZE = 0.9  # 0.5
+const DEFAULT_SCALE = 1
+const CROUCH_SCALE = 0.9  # 0.5
 const CROUCH_OFFSET = 5.5  # 27.5
 const DOUBLETAP_DELAY = 0.25
 
@@ -15,12 +14,10 @@ const DOUBLETAP_DELAY = 0.25
 @export var walk_speed = DEFAULT_WALK_SPEED
 @export var jump_speed = DEFAULT_JUMP_SPEED
 
-var can_double_jump = true
-var can_dash = true
+var can_double_jump: bool = true
 var last_direction = ""
-var direction = 0
-var is_crouching = false
-var landing: bool
+var is_crouching: bool = false
+var landing: bool = false
 var doubletap_time = DOUBLETAP_DELAY
 
 
@@ -58,14 +55,14 @@ func _physics_process(delta):
 		change_sprite("crouch")
 		walk_speed = CROUCH_WALK_SPEED
 		if not is_crouching:
-			get_node(".").scale.y = CROUCH_SIZE
+			get_node(".").scale.y = CROUCH_SCALE
 			get_node(".").position.y += CROUCH_OFFSET
 		is_crouching = true
 	else:
 		if is_crouching:
 			change_sprite("")
 			get_node(".").position.y -= CROUCH_OFFSET
-			get_node(".").scale.y = DEFAULT_SIZE
+			get_node(".").scale.y = DEFAULT_SCALE
 			walk_speed = DEFAULT_WALK_SPEED
 		is_crouching = false
 
