@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsyfep1odrxje"]
+
+[ext_resource type="PackedScene" path="res://Scenes/Ground.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://b6h0olskapvy8" path="res://scenes/Player.tscn" id="2_lcrpp"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Ground" parent="." instance=ExtResource("1")]
+position = Vector2(880, 467)
+
+[node name="Ground2" parent="." instance=ExtResource("1")]
+position = Vector2(528, 221)
+
+[node name="Ground3" parent="." instance=ExtResource("1")]
+position = Vector2(176, 467)
+
+[node name="Ground4" parent="." instance=ExtResource("1")]
+position = Vector2(528, 613)
+
+[node name="Ground5" parent="." instance=ExtResource("1")]
+position = Vector2(1115, 320)
+
+[node name="Player" parent="." instance=ExtResource("2_lcrpp")]
+position = Vector2(44, 377)
