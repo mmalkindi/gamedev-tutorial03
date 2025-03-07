@@ -1,10 +1,68 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6h0olskapvy8"]
+[gd_scene load_steps=10 format=3 uid="uid://b6h0olskapvy8"]
 
 [ext_resource type="Script" path="res://scenes/Player.gd" id="1_85l7s"]
-[ext_resource type="Texture2D" uid="uid://ofsbv6coxbmq" path="res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png" id="2_4548p"]
+[ext_resource type="Texture2D" uid="uid://d2to1aj6m7mgl" path="res://assets/kenney_platformercharacters/PNG/Adventurer/adventurer_tilesheet.png" id="2_p3eqx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k302r"]
 size = Vector2(9.51028, 22.7083)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w2enx"]
+atlas = ExtResource("2_p3eqx")
+region = Rect2(240, 0, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttihn"]
+atlas = ExtResource("2_p3eqx")
+region = Rect2(400, 220, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3fi1"]
+atlas = ExtResource("2_p3eqx")
+region = Rect2(80, 0, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hudtn"]
+atlas = ExtResource("2_p3eqx")
+region = Rect2(0, 110, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw84n"]
+atlas = ExtResource("2_p3eqx")
+region = Rect2(80, 110, 80, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2tjfs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w2enx")
+}],
+"loop": true,
+"name": &"crouch",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttihn")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3fi1")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hudtn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw84n")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_85l7s")
@@ -14,5 +72,8 @@ position = Vector2(1.5, 12.5)
 scale = Vector2(4.94202, 3.74312)
 shape = SubResource("RectangleShape2D_k302r")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_4548p")
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2tjfs")
+animation = &"jump"
+autoplay = "idle"
+frame_progress = 1.0
