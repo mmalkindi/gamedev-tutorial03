@@ -13,6 +13,7 @@ const DOUBLETAP_DELAY = 0.25
 @export var gravity = DEFAULT_GRAVITY
 @export var walk_speed = DEFAULT_WALK_SPEED
 @export var jump_speed = DEFAULT_JUMP_SPEED
+@onready var animplayer = $Animation
 
 var can_double_jump: bool = true
 var last_direction = ""
@@ -53,10 +54,10 @@ func _get_input() -> void:
 		
 func _determine_direction():
 	if Input.is_action_pressed("move_left"):
-		get_node("Sprite2D").flip_h = true
+		animplayer.flip_h = true
 		velocity.x = -walk_speed
 	elif Input.is_action_pressed("move_right"):
-		get_node("Sprite2D").flip_h = false
+		animplayer.flip_h = false
 		velocity.x = walk_speed
 	else:
 		velocity.x = 0
@@ -84,23 +85,10 @@ func _on_jump():
 	landing = true
 
 func change_animation(state: String) -> void:
-	if state == "jump":
-		get_node("Sprite2D").texture = load(
-			"res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_jump.png"
-		)
-	elif state == "walk":
-		get_node("Sprite2D").texture = load(
-			"res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_walk1.png"
-		)
-	elif state == "crouch":
-		get_node("Sprite2D").texture = load(
-			"res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_duck.png"
-		)
-	else:
-		get_node("Sprite2D").texture = load(
-			"res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png"
-		)
-
+	if state == "":
+		animplayer.play("idle")
+		return
+	animplayer.play(state)
 
 func _physics_process(delta):
 	velocity.y += delta * gravity
@@ -119,10 +107,6 @@ func _physics_process(delta):
 	_get_input()
 	_determine_direction()
 	move_and_slide()
-
-func _ready() -> void:
-	change_animation("idle")
-
 
 func _process(delta: float) -> void:
 	doubletap_time -= delta
