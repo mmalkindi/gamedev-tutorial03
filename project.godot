@@ -10,9 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Tutorial 3"
+config/name="Tutorial 3 & 5"
+config/tags=PackedStringArray("gamedev")
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.3")
+boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [gui]
