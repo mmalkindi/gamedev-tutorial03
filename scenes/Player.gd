@@ -20,39 +20,9 @@ var is_crouching: bool = false
 var landing: bool = false
 var doubletap_time = DOUBLETAP_DELAY
 
-
-func _physics_process(delta):
-	velocity.y += delta * gravity  # Always apply gravity
-
-	# Handle all code interfacing with landing state
-	if is_on_floor():
-		# on ground
-		if Input.is_action_just_pressed("move_jump"):
-			velocity.y = jump_speed
-		elif Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
-			change_sprite("walk")
-		else:
-			change_sprite("")
-
-		if landing:
-			# just landed
-			change_sprite("")
-			can_double_jump = true
-			landing = false
-	else:
-		# in the air
-		if Input.is_action_just_pressed("move_jump") and can_double_jump:
-			velocity.y = jump_speed
-			can_double_jump = false
-
-		if !landing:
-			# takeoff
-			change_sprite("jump")
-			landing = true
-
-	# Regardless of air status (strafe, crouch)
+func _get_input() -> void:
 	if Input.is_action_pressed("move_crouch"):
-		change_sprite("crouch")
+		change_animation("crouch")
 		walk_speed = CROUCH_WALK_SPEED
 		if not is_crouching:
 			get_node(".").scale.y = CROUCH_SCALE
@@ -60,7 +30,7 @@ func _physics_process(delta):
 		is_crouching = true
 	else:
 		if is_crouching:
-			change_sprite("")
+			change_animation("idle")
 			get_node(".").position.y -= CROUCH_OFFSET
 			get_node(".").scale.y = DEFAULT_SCALE
 			walk_speed = DEFAULT_WALK_SPEED
@@ -73,7 +43,6 @@ func _physics_process(delta):
 			walk_speed = DEFAULT_WALK_SPEED
 			doubletap_time = DOUBLETAP_DELAY
 		last_direction = "left"
-
 	elif Input.is_action_just_pressed("move_right"):
 		if last_direction == "right" and doubletap_time >= 0 and not is_crouching:
 			walk_speed = DASH_SPEED
@@ -81,8 +50,8 @@ func _physics_process(delta):
 			walk_speed = DEFAULT_WALK_SPEED
 			doubletap_time = DOUBLETAP_DELAY
 		last_direction = "right"
-
-	# Determine direction
+		
+func _determine_direction():
 	if Input.is_action_pressed("move_left"):
 		get_node("Sprite2D").flip_h = true
 		velocity.x = -walk_speed
@@ -91,12 +60,30 @@ func _physics_process(delta):
 		velocity.x = walk_speed
 	else:
 		velocity.x = 0
+		
+func _get_input_on_ground():
+	if Input.is_action_just_pressed("move_jump"):
+		velocity.y = jump_speed
+	elif Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+		change_animation("walk")
+	else:
+		change_animation("")
 
-	# "move_and_slide" already takes delta time into account.
-	move_and_slide()
+func _on_landing():
+	change_animation("")
+	can_double_jump = true
+	landing = false
+	
+func _get_input_on_air():
+	if Input.is_action_just_pressed("move_jump") and can_double_jump:
+		velocity.y = jump_speed
+		can_double_jump = false
 
+func _on_jump():
+	change_animation("jump")
+	landing = true
 
-func change_sprite(state: String) -> void:
+func change_animation(state: String) -> void:
 	if state == "jump":
 		get_node("Sprite2D").texture = load(
 			"res://assets/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_jump.png"
@@ -115,11 +102,27 @@ func change_sprite(state: String) -> void:
 		)
 
 
-# Called when the node enters the scene tree for the first time.
+func _physics_process(delta):
+	velocity.y += delta * gravity
+
+	# Handle all code interfacing with landing state
+	if is_on_floor():
+		_get_input_on_ground()
+		if landing:
+			_on_landing()
+	else:
+		_get_input_on_air()
+		if !landing:
+			_on_jump()
+
+	# Regardless of air status (strafe, crouch)
+	_get_input()
+	_determine_direction()
+	move_and_slide()
+
 func _ready() -> void:
-	pass  # Replace with function body.
+	change_animation("idle")
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	doubletap_time -= delta
