@@ -1,6 +1,19 @@
-# Tutorial 3 - Introduction to Game Programming
+# Tutorial 3 & 5
 
-## Proses Pengerjaan: Fitur Lanjutan
+| Index |
+| --- |
+| [Tutorial 3](#tutorial-3---introduction-to-game-programming) |
+| [Tutorial 5](#tutorial-5---assets-creation--integration) |
+
+## Tutorial 5 - Assets Creation & Integration
+
+...
+
+## Tutorial 3 - Introduction to Game Programming
+
+Final Commit: `47c76df`
+
+### Proses Pengerjaan: Fitur Lanjutan
 
 Pertama saya melakukan *breakdown* dari ketiga fitur lanjutan tersebut untuk memahaminya lebih lanjut:
 
@@ -16,7 +29,7 @@ Namun kode saya di tahap ini sudah lumayan berantakan, sehingga dilakukan *refac
 Setelah itu, saya menggunakan adaptasi dari forum post [ini](https://godotforums.org/d/35106-is-there-a-simple-solution-for-a-double-tap/9)
 untuk menerapkan *double tap* yang diperlukan fitur `Dashing`.
 
-## Proses Pengerjaan: Polishing
+### Proses Pengerjaan: Polishing
 
 Untuk polishing, saya melakukan:
 
