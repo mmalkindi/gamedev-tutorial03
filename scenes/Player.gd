@@ -1,5 +1,16 @@
 extends CharacterBody2D
 
+@export var gravity = DEFAULT_GRAVITY
+@export var walk_speed = DEFAULT_WALK_SPEED
+@export var jump_speed = DEFAULT_JUMP_SPEED
+@export var obstacle: PackedScene
+@export var spawn_range: float = 0
+@export var min_interval: float = 1
+@export var max_interval: float = 1
+@onready var animplayer = $Animation
+@onready var hurtSound = $Hurt
+@onready var doublejumpSound = $Woohoo
+
 const DEFAULT_GRAVITY = 1500.0
 const DEFAULT_JUMP_SPEED = -500
 const DEFAULT_WALK_SPEED = 300
@@ -9,14 +20,6 @@ const DEFAULT_SCALE = 1
 const CROUCH_SCALE = 0.9  # 0.5
 const CROUCH_OFFSET = 5.5  # 27.5
 const DOUBLETAP_DELAY = 0.25
-
-@export var gravity = DEFAULT_GRAVITY
-@export var walk_speed = DEFAULT_WALK_SPEED
-@export var jump_speed = DEFAULT_JUMP_SPEED
-@onready var animplayer = $Animation
-@onready var hurtSound = $Hurt
-@onready var doublejumpSound = $Woohoo
-
 var can_double_jump: bool = true
 var last_direction = ""
 var is_crouching: bool = false
@@ -128,12 +131,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.get_name() == "Enemy":
 		hurtSound.play()
 		spawn()
-
-
-@export var obstacle: PackedScene
-@export var spawn_range: float = 0
-@export var min_interval: float = 1
-@export var max_interval: float = 1
 
 
 func spawn():
