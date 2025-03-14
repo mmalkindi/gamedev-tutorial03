@@ -23,6 +23,7 @@ var is_crouching: bool = false
 var landing: bool = false
 var doubletap_time = DOUBLETAP_DELAY
 
+
 func _get_input() -> void:
 	if Input.is_action_pressed("move_crouch"):
 		change_animation("crouch")
@@ -53,7 +54,8 @@ func _get_input() -> void:
 			walk_speed = DEFAULT_WALK_SPEED
 			doubletap_time = DOUBLETAP_DELAY
 		last_direction = "right"
-		
+
+
 func _determine_direction():
 	if Input.is_action_pressed("move_left"):
 		animplayer.flip_h = true
@@ -63,7 +65,8 @@ func _determine_direction():
 		velocity.x = walk_speed
 	else:
 		velocity.x = 0
-		
+
+
 func _get_input_on_ground():
 	if Input.is_action_just_pressed("move_jump"):
 		velocity.y = jump_speed
@@ -72,26 +75,31 @@ func _get_input_on_ground():
 	else:
 		change_animation("")
 
+
 func _on_landing():
 	change_animation("")
 	can_double_jump = true
 	landing = false
-	
+
+
 func _get_input_on_air():
 	if Input.is_action_just_pressed("move_jump") and can_double_jump:
 		velocity.y = jump_speed
 		can_double_jump = false
 		doublejumpSound.play()
 
+
 func _on_jump():
 	change_animation("jump")
 	landing = true
+
 
 func change_animation(state: String) -> void:
 	if state == "":
 		animplayer.play("idle")
 		return
 	animplayer.play(state)
+
 
 func _physics_process(delta):
 	velocity.y += delta * gravity
@@ -111,15 +119,17 @@ func _physics_process(delta):
 	_determine_direction()
 	move_and_slide()
 
+
 func _process(delta: float) -> void:
 	doubletap_time -= delta
+
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.get_name() == "Enemy":
 		hurtSound.play()
 		spawn()
-		
-		
+
+
 @export var obstacle: PackedScene
 @export var spawn_range: float = 0
 @export var min_interval: float = 1
