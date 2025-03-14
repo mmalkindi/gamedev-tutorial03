@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsyfep1odrxje"]
+[gd_scene load_steps=4 format=3 uid="uid://dsyfep1odrxje"]
 
 [ext_resource type="PackedScene" path="res://Scenes/Ground.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b6h0olskapvy8" path="res://scenes/Player.tscn" id="2_lcrpp"]
+[ext_resource type="AudioStream" uid="uid://c3tbaetchs5t3" path="res://assets/sound/bgm.mp3" id="3_keu6u"]
 
 [node name="Root" type="Node2D"]
 
@@ -22,3 +23,7 @@ position = Vector2(1115, 320)
 
 [node name="Player" parent="." instance=ExtResource("2_lcrpp")]
 position = Vector2(44, 377)
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_keu6u")
+volume_db = 1.0
