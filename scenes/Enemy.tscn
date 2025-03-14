@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=3 uid="uid://bffhh8oyweh63"]
+[gd_scene load_steps=8 format=3 uid="uid://bffhh8oyweh63"]
 
-[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_xgwyu"]
 [ext_resource type="Texture2D" uid="uid://d2w5s67qoymf2" path="res://assets/kenney_platformercharacters/PNG/Zombie/zombie_tilesheet.png" id="2_ofphw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1dgl"]
@@ -48,7 +47,6 @@ animations = [{
 size = Vector2(9.51028, 22.7083)
 
 [node name="Enemy" type="CharacterBody2D"]
-script = ExtResource("1_xgwyu")
 
 [node name="Animation" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_2tjfs")

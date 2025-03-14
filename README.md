@@ -8,6 +8,7 @@
 ## Tutorial 5 - Assets Creation & Integration
 
 Objek baru dengan animasi: Enemy. Memiliki animasi "attack" yang looping
+Background music: "Melancholy Aurora" by Brylie Christopher Oxley (Free Music Archive, License CC BY)
 Sound effect: Ketika player Double jump (Woo!) dan Hurt (Oof!)
 Interaksi: Ketika player Hurt (hit) Enemy utama, ia akan create/spawn zombie baru
 Audio feedback: Pemain akan memainkan sound effect "Hurt" ketika collide dengan Enemy
