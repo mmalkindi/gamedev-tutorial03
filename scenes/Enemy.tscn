@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://bffhh8oyweh63"]
+
+[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_xgwyu"]
+[ext_resource type="Texture2D" uid="uid://d2w5s67qoymf2" path="res://assets/kenney_platformercharacters/PNG/Zombie/zombie_tilesheet.png" id="2_ofphw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1dgl"]
+atlas = ExtResource("2_ofphw")
+region = Rect2(320, 110, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svgqf"]
+atlas = ExtResource("2_ofphw")
+region = Rect2(400, 110, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b45o2"]
+atlas = ExtResource("2_ofphw")
+region = Rect2(480, 110, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4vjc"]
+atlas = ExtResource("2_ofphw")
+region = Rect2(0, 0, 80, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2tjfs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1dgl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svgqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b45o2")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l4vjc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k302r"]
+size = Vector2(9.51028, 22.7083)
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_xgwyu")
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2tjfs")
+animation = &"attack"
+autoplay = "attack"
+flip_h = true
+
+[node name="SoundEffect" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, 12.5)
+scale = Vector2(4.94202, 3.74312)
+shape = SubResource("RectangleShape2D_k302r")

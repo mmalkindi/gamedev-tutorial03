@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsyfep1odrxje"]
+[gd_scene load_steps=6 format=3 uid="uid://dsyfep1odrxje"]
 
 [ext_resource type="PackedScene" path="res://Scenes/Ground.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://b6h0olskapvy8" path="res://scenes/Player.tscn" id="2_lcrpp"]
 [ext_resource type="AudioStream" uid="uid://c3tbaetchs5t3" path="res://assets/sound/bgm.mp3" id="3_keu6u"]
+[ext_resource type="PackedScene" uid="uid://bffhh8oyweh63" path="res://scenes/Enemy.tscn" id="4_8wnxd"]
+
+[sub_resource type="TileSet" id="TileSet_av2wq"]
 
 [node name="Root" type="Node2D"]
 
@@ -27,3 +30,11 @@ position = Vector2(44, 377)
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_keu6u")
 volume_db = 1.0
+autoplay = true
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_av2wq")
+format = 2
+
+[node name="Enemy" parent="." instance=ExtResource("4_8wnxd")]
+position = Vector2(616, 524)

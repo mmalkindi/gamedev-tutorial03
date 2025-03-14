@@ -14,6 +14,8 @@ const DOUBLETAP_DELAY = 0.25
 @export var walk_speed = DEFAULT_WALK_SPEED
 @export var jump_speed = DEFAULT_JUMP_SPEED
 @onready var animplayer = $Animation
+@onready var hurtSound = $Hurt
+@onready var doublejumpSound = $Woohoo
 
 var can_double_jump: bool = true
 var last_direction = ""
@@ -79,6 +81,7 @@ func _get_input_on_air():
 	if Input.is_action_just_pressed("move_jump") and can_double_jump:
 		velocity.y = jump_speed
 		can_double_jump = false
+		doublejumpSound.play()
 
 func _on_jump():
 	change_animation("jump")
@@ -110,3 +113,25 @@ func _physics_process(delta):
 
 func _process(delta: float) -> void:
 	doubletap_time -= delta
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.get_name() == "Enemy":
+		hurtSound.play()
+		spawn()
+		
+		
+@export var obstacle: PackedScene
+@export var spawn_range: float = 0
+@export var min_interval: float = 1
+@export var max_interval: float = 1
+
+
+func spawn():
+	var spawned = obstacle.instantiate()
+	get_parent().add_child.call_deferred(spawned)
+
+	var spawn_pos = global_position
+	spawn_pos.y = spawn_pos.y - 400
+	spawn_pos.x = spawn_pos.x + randf_range(-spawn_range, spawn_range)
+
+	spawned.global_position = spawn_pos

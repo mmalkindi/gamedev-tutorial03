@@ -1,7 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b6h0olskapvy8"]
+[gd_scene load_steps=14 format=3 uid="uid://b6h0olskapvy8"]
 
 [ext_resource type="Script" path="res://scenes/Player.gd" id="1_85l7s"]
+[ext_resource type="PackedScene" uid="uid://bffhh8oyweh63" path="res://scenes/Enemy.tscn" id="2_73sec"]
 [ext_resource type="Texture2D" uid="uid://d2to1aj6m7mgl" path="res://assets/kenney_platformercharacters/PNG/Adventurer/adventurer_tilesheet.png" id="2_p3eqx"]
+[ext_resource type="AudioStream" uid="uid://dlod7t2d874n0" path="res://assets/sound/player_hurt.wav" id="3_g13yh"]
+[ext_resource type="AudioStream" uid="uid://bjaa61wt76lr3" path="res://assets/sound/player_doublejump.wav" id="4_apg77"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k302r"]
 size = Vector2(9.51028, 22.7083)
@@ -64,8 +67,12 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7lraa"]
+size = Vector2(12.6972, 22.7083)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_85l7s")
+obstacle = ExtResource("2_73sec")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 12.5)
@@ -77,3 +84,20 @@ sprite_frames = SubResource("SpriteFrames_2tjfs")
 animation = &"jump"
 autoplay = "idle"
 frame_progress = 1.0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.625002, 12)
+scale = Vector2(4.94202, 3.74312)
+shape = SubResource("RectangleShape2D_7lraa")
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_g13yh")
+volume_db = 10.0
+
+[node name="Woohoo" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_apg77")
+volume_db = 5.0
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
